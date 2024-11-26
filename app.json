@@ -1,4 +1,10 @@
 {
   "name": "easyShop",
-  "displayName": "easyShop"
+  "displayName": "easyShop",
+  "plugins": [
+    "expo-router",
+    "expo-font",
+    "expo-camera"
+  ],
+  "newArchEnabled": true 
 }
