@@ -4,7 +4,8 @@
   "plugins": [
     "expo-router",
     "expo-font",
-    "expo-camera"
+    "expo-camera",
+    "expo-barcode-scanner"
   ],
-  "newArchEnabled": true 
+  "newArchEnabled": true
 }
