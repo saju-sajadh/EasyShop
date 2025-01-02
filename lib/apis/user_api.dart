@@ -4,7 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import '../constants/appwrite.dart';
 import '../constants/providers.dart';
 import '../constants/type_dart.dart';
-import '../models/user_model.dart';
+import '../model_schema/user_model.dart';
 import 'package:appwrite/appwrite.dart';
 
 final userAPIProvider = Provider((ref) {

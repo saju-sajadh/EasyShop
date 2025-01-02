@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import '../widget/top_navbar.dart';
+
 
 class ScanShop extends StatefulWidget {
   @override
@@ -38,7 +38,6 @@ class _ScanScreenState extends State<ScanShop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(),
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.white,

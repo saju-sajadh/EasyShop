@@ -4,5 +4,5 @@ import 'app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(ProviderScope(child: const MainApp()));
+  runApp(ProviderScope(child: MyApp()));
 }

@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:EasyShop/screens/splash_screen.dart';
+import 'package:EasyShop/styles/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'constants/auth_controller.dart';
-import 'screens/product_screen.dart';
-import 'screens/profile_screen.dart';
-import 'screens/settings_screen.dart';
-import 'screens/signin_screen.dart';
-import 'screens/signup_screen.dart';
-import 'screens/view.dart';
-import 'widget/bottom_navbar.dart';
-import './screens/landing_screen.dart';
-import 'widget/error_page.dart';
-import 'widget/loading_page.dart';
+import 'screens/dashboard/dashboard_screen.dart';
 
-class MainApp extends ConsumerWidget {
-  const MainApp({Key? key}) : super(key: key);
+class MyApp extends ConsumerWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,31 +18,21 @@ class MainApp extends ConsumerWidget {
       ],
     );
     return MaterialApp(
-      theme: ThemeData.light(),
-      // home: LandingScreen(),
+      theme: themeData,
       home: ref.watch(currentUserAccountProvider).when(
           data: (user) {
             if(user != null){ 
-              return  BottomNavBar();
+              return  DashboardScreen();
             }
-            return const LandingScreen();
+            return  SplashScreen();
           },
           error: (error, st) {
             print(error);
-            return ServerDownPage();
+            return SplashScreen();
           },
-          loading: () => const LoadingPage()),
+          loading: () => SplashScreen()),
       debugShowCheckedModeBanner: false,
-      routes: {
-        '/landing': (context) => LandingScreen(),
-        '/home': (context) => BottomNavBar(),
-        '/signup': (context) => SignupScreen(),
-        '/signin': (context) => LoginScreen(),
-        '/profile': (context) => ProfileScreen(),
-        '/settings': (context) => SettingsScreen(),
-        '/viewall': (context) => ViewAllScreen(),
-        '/product': (context) => ProductDetailsScreen(),
-      },
     );
   }
 }
+

@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:appwrite/models.dart' as model;
 import '../apis/auth_api.dart';
 import '../apis/user_api.dart';
-import '../models/user_model.dart';
-import '../widget/snack_bar.dart';
+import '../model_schema/user_model.dart';
+import '../screens/auth/login_page.dart';
+import '../screens/dashboard/dashboard_screen.dart';
+import '../widgets/snack_bar.dart';
 
 final authControllerProvider =
     StateNotifierProvider<AuthController, bool>((ref) {
@@ -41,6 +43,7 @@ class AuthController extends StateNotifier<bool> {
   Future<model.Account?> currentUser() => _authAPI.currentUserAccount();
 
   void signUp({
+    required String name,
     required String email,
     required String password,
     required BuildContext context,
@@ -55,7 +58,7 @@ class AuthController extends StateNotifier<bool> {
       // User created successfully
       UserModel userModel = UserModel(
         email: email,
-        name: getNameFromEmail(email),
+        name: name,
         uid: user.$id,
         orders: [],
         cart: [],
@@ -66,25 +69,35 @@ class AuthController extends StateNotifier<bool> {
         showSnackBar(context, failure.message);
       }, (r) {
         showSnackBar(context, 'Account Created Successfully!');
-        // login(email: email, password: password, context: context);
+        login(email: email, password: password, context: context);
       });
     });
 
     state = false;
   }
 
-  void login({
-    required String email,
-    required String password,
-    required BuildContext context,
-  }) async {
-    state = true;
-    final res = await _authAPI.login(email: email, password: password);
-    state = false;
-    res.fold(((l) {
+void login({
+  required String email,
+  required String password,
+  required BuildContext context,
+}) async {
+  state = true;
+  final res = await _authAPI.login(email: email, password: password);
+  state = false;
+  res.fold(
+    (l) {
       showSnackBar(context, l.message);
-    }), (r) => Navigator.pushNamed(context, '/home'));
-  }
+    },
+    (r) {
+      // Navigate to DashboardScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardScreen()),
+      );
+    },
+  );
+}
+
 
   Future<UserModel> getUserData(String uid) async {
     final document = await _userAPI.getUserData(uid);
@@ -98,10 +111,9 @@ class AuthController extends StateNotifier<bool> {
     state = false;
     res.fold(
       (l) => showSnackBar(context, l.message),
-      (r) => Navigator.pushNamedAndRemoveUntil(
+      (r) => Navigator.pushReplacement(
         context,
-        '/landing',
-        (route) => false,
+        MaterialPageRoute(builder: (context) => LoginPage()),
       ),
     );
   }
